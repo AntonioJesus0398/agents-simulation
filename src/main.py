@@ -12,37 +12,6 @@ class Logger:
 
 logger = Logger('logging.txt')
 
-class Element:
-    def __init__(self):
-        self.content = []
-
-    @property
-    def empty(self):
-        return self.content == []
-
-    def __repr__(self):
-        if self.empty:
-            return 'E'
-        result = ''
-        for item in self.content:
-            result += str(item)
-        return result
-
-class PlayPen:
-    def __repr__(self):
-        return 'P'
-
-class Obstacle:
-    def __repr__(self):
-        return 'O'
-
-class Kid:
-    def __repr__(self):
-        return 'K'
-
-class Dirt:
-    def __repr__(self):
-        return 'D'
 
 class Robot:
     def __repr__(self):
@@ -59,7 +28,7 @@ class Enviroment:
         self.rows = N
         self.columns = M
         self.total_cells = N * M
-        self.board = [[Element() for _ in range(M)] for _ in range(N)]
+        self.board = [['E' for _ in range(M)] for _ in range(N)]
 
         # place the playpens from top to bottom and left to right
         n = no_kids
@@ -69,30 +38,33 @@ class Enviroment:
             for j in range(M):
                 if n == 0:
                     break
-                self.board[i][j].content.append(PlayPen())
+                self.board[i][j] = 'P'
                 n -= 1
 
-        empty_positions = [(i, j) for i in range(N) for j in range(M) if self.board[i][j].empty]
-        logger.write(str(empty_positions))
+        empty_positions = [(i, j) for i in range(N) for j in range(M) if self.board[i][j] == 'E']
         random.shuffle(empty_positions)
 
         def place_randomly(entity, number):
             for _ in range(number):
                 x, y = empty_positions.pop(0)
-                self.board[x][y] = entity()
+                self.board[x][y] = entity
 
         self.no_dirty_cells = _percent_to_number(dirty_percent, self.total_cells)
-        place_randomly(Dirt, self.no_dirty_cells)
-        place_randomly(Robot, 1)
-        place_randomly(Obstacle, _percent_to_number(obstacle_percent, self.total_cells))
-        place_randomly(Kid, no_kids)
+        place_randomly('D', self.no_dirty_cells)
+        place_randomly('R', 1)
+        place_randomly('O', _percent_to_number(obstacle_percent, self.total_cells))
+        place_randomly('K', no_kids)
+
+        self.kids = [(i,j) for i in range(self.rows) for j in range(self.columns) if self.board[i][j] == 'K']
+
+    # def change():
 
 
     def __repr__(self):
         result = ''
         for i in range(self.rows):
             for j in range(self.columns):
-                content = str(self.board[i][j])
+                content = self.board[i][j]
                 assert len(content) >= 1 and len(content) <=3
                 result += content + ' ' * (4 - len(content))
             result += '\n'
