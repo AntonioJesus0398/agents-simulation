@@ -12,11 +12,6 @@ class Logger:
 
 logger = Logger('logging.txt')
 
-
-class Robot:
-    def __repr__(self):
-        return 'R'
-
 def _percent_to_number(percent, total):
     return int(percent * total / 100)
 
@@ -31,17 +26,18 @@ class Enviroment:
         self.columns = M
         self.total_cells = N * M
         self.board = [['E' for _ in range(M)] for _ in range(N)]
+        self.directions = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
 
-        # place the playpens from top to bottom and left to right
-        n = no_kids
-        for i in range(N):
-            if n == 0:
-                break
-            for j in range(M):
-                if n == 0:
-                    break
-                self.board[i][j] = 'P'
-                n -= 1
+        # place the playpens
+        available_cells = [(random.randint(0, N - 1), random.randint(0, M - 1))]
+        for _ in range(no_kids):
+            random.shuffle(available_cells)
+            x, y = available_cells.pop(0)
+            self.board[x][y] = 'P'
+            for dx, dy in self.directions:
+                nx, ny = x + dx, y + dy
+                if self.valid_position(nx, ny) and self.board[nx][ny] == 'E' and (nx, ny) not in available_cells:
+                    available_cells.append((nx, ny))
 
         empty_positions = [(i, j) for i in range(N) for j in range(M) if self.board[i][j] == 'E']
         random.shuffle(empty_positions)
@@ -57,17 +53,18 @@ class Enviroment:
         place_randomly('O', _percent_to_number(obstacle_percent, self.total_cells))
         place_randomly('K', no_kids)
 
+        self.robot_position = [(i,j) for i in range(self.rows) for j in range(self.columns) if self.board[i][j] == 'R'][0]
         self.kids = [(i,j) for i in range(self.rows) for j in range(self.columns) if self.board[i][j] == 'K']
 
         logger.write(self)
     def valid_position(self, x, y):
-        return x >= 0 and x < self.columns and y >= 0 and y < self.rows
+        return x >= 0 and x < self.rows and y >= 0 and y < self.columns
 
     def change(self):
         # the kids move and push obstacles
         for i, (x, y) in enumerate(self.kids):
-            directions = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
-            dx, dy = directions[random.randint(0, 7)]
+
+            dx, dy = self.directions[random.randint(0, 7)]
             nx, ny = x + dx, y + dy
             if self.valid_position(nx, ny):
                 if self.board[nx][ny] == 'E':
@@ -93,7 +90,7 @@ class Enviroment:
                         logger.write(f"Kid {i} moved from {x, y} to {nx, ny}\n")
 
             # the kids generate dirt
-            available_cells = [(x + dh, y + dv) for dh, dv in directions if self.valid_position(x + dh, y + dv)] + [(x, y)]
+            available_cells = [(x + dh, y + dv) for dh, dv in self.directions if self.valid_position(x + dh, y + dv)] + [(x, y)]
             no_kids = len([(a, b) for a,b in available_cells if self.board[a][b] == 'K'])
             available_cells = [(a,b) for a, b in available_cells if self.board[a][b] == 'E']
             random.shuffle(available_cells)
@@ -121,9 +118,10 @@ class Enviroment:
                 assert len(content) >= 1 and len(content) <=3
                 result += content + ' ' * (4 - len(content))
             result += '\n'
+        result += f'Robot position: {self.robot_position}\n'
         result += 'Kids: ' + str({i: (x,y) for i,(x,y) in enumerate(self.kids)}) + '\n\n'
         return result
 
-    # @property
-    # def dirt_cells_percent(self):
-    #     return _number_to_percent(self.no_dirty_cells, self.total_cells)
+    @property
+    def dirt_cells_percent(self):
+        return _number_to_percent(self.no_dirty_cells, self.total_cells)
