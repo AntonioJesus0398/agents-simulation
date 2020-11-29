@@ -64,8 +64,10 @@ class Enviroment:
         return x >= 0 and x < self.columns and y >= 0 and y < self.rows
 
     def change(self):
+        # the kids move and push obstacles
         for i, (x, y) in enumerate(self.kids):
-            dx, dy = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)][random.randint(0, 7)]
+            directions = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
+            dx, dy = directions[random.randint(0, 7)]
             nx, ny = x + dx, y + dy
             if self.valid_position(nx, ny):
                 if self.board[nx][ny] == 'E':
@@ -89,6 +91,25 @@ class Enviroment:
                         self.board[x][y] = 'E'
                         self.kids[i] = (nx, ny)
                         logger.write(f"Kid {i} moved from {x, y} to {nx, ny}\n")
+
+            # the kids generate dirt
+            available_cells = [(x + dh, y + dv) for dh, dv in directions if self.valid_position(x + dh, y + dv)] + [(x, y)]
+            no_kids = len([(a, b) for a,b in available_cells if self.board[a][b] == 'K'])
+            available_cells = [(a,b) for a, b in available_cells if self.board[a][b] == 'E']
+            random.shuffle(available_cells)
+
+            N = 1
+            if no_kids == 2:
+                N = 3
+            if no_kids > 2:
+                N = 6
+            for _ in range(N):
+                if len(available_cells) == 0:
+                    break
+                if random.random() < 1:
+                    a1, a2 = available_cells.pop(0)
+                    self.board[a1][a2] = 'D'
+                    logger.write(f'Kid {i} generates dirt at {a1, a2}\n')
 
         logger.write(self)
 
