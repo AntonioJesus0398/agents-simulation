@@ -106,6 +106,7 @@ class Enviroment:
                 if random.random() < 1:
                     a1, a2 = available_cells.pop(0)
                     self.board[a1][a2] = 'D'
+                    self.no_dirty_cells += 1
                     logger.write(f'Kid {i} generates dirt at {a1, a2}\n')
 
         logger.write(self)
@@ -119,7 +120,8 @@ class Enviroment:
                 result += content + ' ' * (4 - len(content))
             result += '\n'
         result += f'Robot position: {self.robot_position}\n'
-        result += 'Kids: ' + str({i: (x,y) for i,(x,y) in enumerate(self.kids)}) + '\n\n'
+        result += 'Kids: ' + str({i: (x,y) for i,(x,y) in enumerate(self.kids)}) + '\n'
+        result += f'Dirty cells: {self.dirt_cells_percent}%\n\n'
         return result
 
     @property
