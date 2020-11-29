@@ -103,7 +103,7 @@ class Enviroment:
             for _ in range(N):
                 if len(available_cells) == 0:
                     break
-                if random.random() < 1:
+                if random.random() < 0.50:
                     a1, a2 = available_cells.pop(0)
                     self.board[a1][a2] = 'D'
                     self.no_dirty_cells += 1
