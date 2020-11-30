@@ -1,0 +1,55 @@
+Results:
+
+enviroment #1:
+Hibrid:{'total_dirt': 90802.05818981066, 'total_time': 4049, 'fails': 16, 'success': 14, 'mean_dirt_cells': 22.425798515636124}
+Proactive:{'total_dirt': 55006.65442015281, 'total_time': 2851, 'fails': 1, 'success': 29, 'mean_dirt_cells': 19.293810740144796}
+
+
+enviroment #2:
+Hibrid:{'total_dirt': 14136.645395584756, 'total_time': 447, 'fails': 30, 'success': 0, 'mean_dirt_cells': 31.62560491182272}
+Proactive:{'total_dirt': 14051.115178262486, 'total_time': 447, 'fails': 30, 'success': 0, 'mean_dirt_cells': 31.43426214376395}
+
+
+enviroment #3:
+Hibrid:{'total_dirt': 26025.312363298377, 'total_time': 808, 'fails': 30, 'success': 0, 'mean_dirt_cells': 32.20954500408215}
+Proactive:{'total_dirt': 30712.070220311576, 'total_time': 991, 'fails': 24, 'success': 6, 'mean_dirt_cells': 30.990989122413296}
+
+
+enviroment #4:
+Hibrid:{'total_dirt': 54957.84214526884, 'total_time': 2312, 'fails': 18, 'success': 12, 'mean_dirt_cells': 23.770692969406937}
+Proactive:{'total_dirt': 39199.83886261341, 'total_time': 2142, 'fails': 0, 'success': 30, 'mean_dirt_cells': 18.30057836723315}
+
+
+enviroment #5:
+Hibrid:{'total_dirt': 113855.18928420193, 'total_time': 5323, 'fails': 8, 'success': 22, 'mean_dirt_cells': 21.38928973965845}
+Proactive:{'total_dirt': 44158.25978156726, 'total_time': 2870, 'fails': 0, 'success': 30, 'mean_dirt_cells': 15.386153233995563}
+
+
+enviroment #6:
+Hibrid:{'total_dirt': 1274010.1353691986, 'total_time': 51056, 'fails': 30, 'success': 0, 'mean_dirt_cells': 24.953191306980543}
+Proactive:{'total_dirt': 72091.21129898517, 'total_time': 3000, 'fails': 0, 'success': 30, 'mean_dirt_cells': 24.03040376632839}
+
+
+enviroment #7:
+Hibrid:{'total_dirt': 35034.957201602105, 'total_time': 2735, 'fails': 0, 'success': 30, 'mean_dirt_cells': 12.80985638084172}
+Proactive:{'total_dirt': 33169.67064353468, 'total_time': 2573, 'fails': 0, 'success': 30, 'mean_dirt_cells': 12.891438260215576}
+
+
+enviroment #8:
+Hibrid:{'total_dirt': 36761.571375484324, 'total_time': 1130, 'fails': 30, 'success': 0, 'mean_dirt_cells': 32.53236404910117}
+Proactive:{'total_dirt': 37988.385383394816, 'total_time': 1384, 'fails': 20, 'success': 10, 'mean_dirt_cells': 27.448255334822843}
+
+
+enviroment #9:
+Hibrid:{'total_dirt': 56888.09712015345, 'total_time': 1896, 'fails': 30, 'success': 0, 'mean_dirt_cells': 30.004270632992323}
+Proactive:{'total_dirt': 170097.79538438935, 'total_time': 5684, 'fails': 30, 'success': 0, 'mean_dirt_cells': 29.925720510976312}
+
+
+enviroment #10:
+Hibrid:{'total_dirt': 25067.961630695427, 'total_time': 781, 'fails': 30, 'success': 0, 'mean_dirt_cells': 32.09726201113371}
+Proactive:{'total_dirt': 54090.15201079909, 'total_time': 1667, 'fails': 18, 'success': 12, 'mean_dirt_cells': 32.44760168614222}
+
+
+General results:
+Hibrid: {'fails': 222, 'success': 78}
+Proactive:{'fails': 123, 'success': 177}

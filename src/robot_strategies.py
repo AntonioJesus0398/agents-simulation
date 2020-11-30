@@ -62,7 +62,7 @@ class Robot:
         assert len(self.enviroment.board[dx][dy].split('_')) in [1, 2]
 
         self.enviroment.robot_position = (dx, dy)
-        logger.write(f'Robot moved from {sx, sy} to {dx, dy}\n')
+        #logger.write(f'Robot moved from {sx, sy} to {dx, dy}\n')
 
     def execute(self):
         pass
@@ -106,7 +106,7 @@ class HibridRobot(Robot):
             if self.enviroment.board[x][y] == 'R_D':
                 self.enviroment.board[x][y] = 'R'
                 self.enviroment.no_dirty_cells -= 1
-                logger.write(f'Robot cleaned {x, y}\n')
+                #logger.write(f'Robot cleaned {x, y}\n')
                 self.state = 'I'
             else:
                 path = self.search('D')
@@ -121,7 +121,7 @@ class HibridRobot(Robot):
             self.move_robot((x, y), (nx, ny))
             if self.enviroment.board[nx][ny] == 'RK_P':
                 self.enviroment.board[nx][ny] = 'R_PK'
-                logger.write(f'Robot left a kid in {nx, ny}\n')
+                #logger.write(f'Robot left a kid in {nx, ny}\n')
                 self.enviroment.free_kids -= 1
                 self.state = 'I'
 
@@ -168,7 +168,7 @@ class ProActiveBot(Robot):
             elif self.enviroment.board[x][y] == 'R_D':
                 self.enviroment.board[x][y] = 'R'
                 self.enviroment.no_dirty_cells -= 1
-                logger.write(f'Robot cleaned {x, y}\n')
+                #logger.write(f'Robot cleaned {x, y}\n')
             else:
                 path = self.search('D')
                 self.move_robot(self.enviroment.robot_position, path[1])
@@ -182,6 +182,6 @@ class ProActiveBot(Robot):
             self.move_robot((x, y), (nx, ny))
             if self.enviroment.board[nx][ny] == 'RK_P':
                 self.enviroment.board[nx][ny] = 'R_PK'
-                logger.write(f'Robot left a kid in {nx, ny}\n')
+                #logger.write(f'Robot left a kid in {nx, ny}\n')
                 self.enviroment.free_kids -= 1
                 self.state = 'I'

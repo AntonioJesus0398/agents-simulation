@@ -5,9 +5,9 @@ import random
 def generate_enviroment():
     rows, columns = random.randint(8, 15), random.randint(8, 15)
     total_cells = rows * columns
-    dirty_percent = random.randint(2, 10)
+    dirty_percent = random.randint(5, 10)
     obstacle_percent = random.randint(5, 10)
-    kids = random.randint(_percent_to_number(3, total_cells), _percent_to_number(5, total_cells))
+    kids = random.randint(_percent_to_number(3, total_cells), _percent_to_number(7, total_cells))
     t = random.randint(80, 150)
     return Enviroment(rows, columns, dirty_percent, obstacle_percent, kids, 0, t)
 
@@ -68,4 +68,4 @@ def perform_simulation(robot, results):
     elif robot.state == 'FF':
         results['fails'] += 1
 
-simulate(10, 5)
+simulate(10, 30)

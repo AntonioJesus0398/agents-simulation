@@ -10,7 +10,7 @@ class Logger:
         with open(self.name, "a") as f:
             f.write(str(s))
 
-logger = Logger('logging.txt')
+#logger = Logger('logging.txt')
 
 def _percent_to_number(percent, total):
     return int(percent * total / 100)
@@ -62,7 +62,7 @@ class Enviroment:
 
         self.robot_position = [(i,j) for i in range(self.rows) for j in range(self.columns) if self.board[i][j] == 'R'][0]
 
-        logger.write(self)
+        #logger.write(self)
 
     def valid_position(self, x, y):
         return x >= 0 and x < self.rows and y >= 0 and y < self.columns
@@ -80,7 +80,7 @@ class Enviroment:
                             self.board[x][y] = 'E'
                             self.board[nx][ny] = 'K'
                             kids_moved.append((nx, ny))
-                            logger.write(f"Kid moved from {x, y} to {nx, ny}\n")
+                            #logger.write(f"Kid moved from {x, y} to {nx, ny}\n")
                         elif self.board[nx][ny] == 'O':
                             nxx, nyy = nx, ny
                             while self.valid_position(nxx, nyy) and self.board[nxx][nyy] == 'O':
@@ -91,12 +91,12 @@ class Enviroment:
                                 while (txx, tyy) != (nx, ny):
                                     txx -= dx
                                     tyy -= dy
-                                    logger.write(f"Kid pushed object from {txx, tyy} to {txx + dx, tyy + dy}\n")
+                                    #logger.write(f"Kid pushed object from {txx, tyy} to {txx + dx, tyy + dy}\n")
                                 self.board[nxx][nyy] = 'O'
                                 self.board[nx][ny] = 'K'
                                 self.board[x][y] = 'E'
                                 kids_moved.append((nx, ny))
-                                logger.write(f"Kid moved from {x, y} to {nx, ny}\n")
+                                #logger.write(f"Kid moved from {x, y} to {nx, ny}\n")
 
                     # the kids generate dirt
                     available_cells = [(x + dh, y + dv) for dh, dv in self.directions if self.valid_position(x + dh, y + dv)] + [(x, y)]
@@ -112,13 +112,13 @@ class Enviroment:
                     for _ in range(N):
                         if len(available_cells) == 0:
                             break
-                        if random.random() < 0.33:
+                        if random.random() < 0.40:
                             a1, a2 = available_cells.pop(0)
                             self.board[a1][a2] = 'D'
                             self.no_dirty_cells += 1
-                            logger.write(f'Kid generates dirt at {a1, a2}\n')
+                            #logger.write(f'Kid generates dirt at {a1, a2}\n')
 
-        logger.write(self)
+        #logger.write(self)
 
     def __repr__(self):
         result = f'Enviroment after {self.time} units of time:\n'
