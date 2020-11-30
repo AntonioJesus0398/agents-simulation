@@ -20,16 +20,20 @@ def _number_to_percent(number, total):
 
 
 class Enviroment:
-    def __init__(self, N, M, dirty_percent, obstacle_percent, no_kids):
+    def __init__(self, N, M, dirty_percent, obstacle_percent, no_kids, time, t):
         self.rows = N
         self.columns = M
+        self.dirty_percent = dirty_percent
+        self.obstacle_percent = obstacle_percent
+        self.total_kids = no_kids
+        self.time = time
+        self.t = t
+
         self.total_cells = N * M
         self.board = [['E' for _ in range(M)] for _ in range(N)]
         self.directions = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
         self.free_kids = no_kids
-        self.total_kids = no_kids
         self.total_obstacles = _percent_to_number(obstacle_percent, self.total_cells)
-        self.time = 0
 
         # place the playpens
         available_cells = [(random.randint(0, N - 1), random.randint(0, M - 1))]
@@ -125,6 +129,7 @@ class Enviroment:
                 result += content + ' ' * (6 - len(content))
             result += '\n'
         result += f'Robot position: {self.robot_position}\n'
+        result += f'Free kids: {self.free_kids}\n'
         result += f'Dirty cells: {self.dirt_cells_percent}%\n\n'
         return result
 
@@ -132,3 +137,6 @@ class Enviroment:
     def dirt_cells_percent(self):
         total_empty_cells = self.total_cells - self.free_kids - self.total_kids - self.total_obstacles - 1
         return _number_to_percent(self.no_dirty_cells, total_empty_cells)
+
+    def variate(self):
+        return Enviroment(self.rows, self.columns, self.dirty_percent, self.obstacle_percent, self.total_kids, self.time, self.t)
