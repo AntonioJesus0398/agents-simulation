@@ -1,4 +1,4 @@
-from main import _percent_to_number, Enviroment
+from enviroment import _percent_to_number, Enviroment
 from robot_strategies import HibridRobot, ProActiveBot
 import random
 
@@ -25,21 +25,23 @@ def simulate(no_envs, sims_per_env):
             perform_simulation(hibrid, results_h)
             print(f'enviroment #{e + 1}, simulation #{s + 1}, proactive')
             perform_simulation(proactive, results_p)
-        results_h['mean_dirt_cells'] = results_h['total_dirt'] / results_h['total_time']
-        results_p['mean_dirt_cells'] = results_p['total_dirt'] / results_p['total_time']
+        results_h['mean_dirty_cells'] = results_h.pop('total_dirt') / results_h.pop('total_time')
+        results_p['mean_dirty_cells'] = results_p.pop('total_dirt') / results_p.pop('total_time')
         hibrid_results.append(results_h)
         proactive_results.append(results_p)
     print('\n\n\nResults:\n')
     for e in range(no_envs):
         print(f'enviroment #{e + 1}:\nHibrid:{hibrid_results[e]}\nProactive:{proactive_results[e]}\n\n')
-    
+
     hibrid_globals = {}
     hibrid_globals['fails'] = sum(map(lambda d: d['fails'], hibrid_results))
     hibrid_globals['success'] = sum(map(lambda d: d['success'], hibrid_results))
+    hibrid_globals['mean_dirty_cells'] = sum(map(lambda d: d['mean_dirty_cells'], hibrid_results)) / no_envs
 
     proactive_globals = {}
     proactive_globals['fails'] = sum(map(lambda d: d['fails'], proactive_results))
     proactive_globals['success'] = sum(map(lambda d: d['success'], proactive_results))
+    proactive_globals['mean_dirty_cells'] = sum(map(lambda d: d['mean_dirty_cells'], proactive_results)) / no_envs
 
     print(f'General results:\nHibrid: {hibrid_globals}\nProactive:{proactive_globals}\n')
 

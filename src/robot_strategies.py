@@ -1,4 +1,4 @@
-from main import *
+from enviroment import *
 
 
 class Robot:
@@ -77,7 +77,7 @@ class HibridRobot(Robot):
         elif self.state == 'I':
             if self.enviroment.free_kids == 0 and self.enviroment.no_dirty_cells == 0:
                 self.state = 'FS'
-            elif self.enviroment.dirt_cells_percent <= 20 and self.enviroment.free_kids:
+            elif self.enviroment.dirt_cells_percent <= 25 and self.enviroment.free_kids:
                 path = self.search('K')
                 nx, ny = path[1]
                 self.move_robot(self.enviroment.robot_position, path[1])
@@ -86,12 +86,12 @@ class HibridRobot(Robot):
                     self.state = 'MK'
                 else:
                     self.state = 'SK'
-            elif (self.enviroment.dirt_cells_percent > 20 and self.enviroment.dirt_cells_percent < 40) or (self.enviroment.dirt_cells_percent < 40 and self.enviroment.free_kids == 0):
+            elif self.enviroment.dirt_cells_percent > 25 or self.enviroment.free_kids == 0:
                 path = self.search('D')
                 self.move_robot(self.enviroment.robot_position, path[1])
                 self.state = 'SD'
             else:
-                self.state = 'FF'
+                raise Exception("This point of the code shouldn't be reached")
 
         elif self.state == 'SK':
             path = self.search('K')
@@ -107,7 +107,8 @@ class HibridRobot(Robot):
                 self.enviroment.board[x][y] = 'R'
                 self.enviroment.no_dirty_cells -= 1
                 #logger.write(f'Robot cleaned {x, y}\n')
-                self.state = 'I'
+                if self.enviroment.dirt_cells_percent < 15:
+                    self.state = 'I'
             else:
                 path = self.search('D')
                 self.move_robot(self.enviroment.robot_position, path[1])
@@ -128,14 +129,10 @@ class HibridRobot(Robot):
 class ProActiveBot(Robot):
 
     def execute(self):
-        if self.enviroment.time == 100:
-            if self.enviroment.dirt_cells_percent <= 40: self.state = 'FS'
-            else: self.state = 'FF'
-
-        elif self.enviroment.dirt_cells_percent > 40:
+        if self.enviroment.dirt_cells_percent > 40:
             self.state = 'FF'
 
-        elif self.state == 'I':
+        if self.state == 'I':
             if self.enviroment.free_kids:
                 path = self.search('K')
                 nx, ny = path[1]
@@ -145,13 +142,10 @@ class ProActiveBot(Robot):
                     self.state = 'MK'
                 else:
                     self.state = 'SK'
-            elif self.enviroment.dirt_cells_percent < 40 and self.enviroment.free_kids == 0:
+            else:
                 path = self.search('D')
                 self.move_robot(self.enviroment.robot_position, path[1])
                 self.state = 'SD'
-            else:
-                self.state = 'FF'
-
 
         elif self.state == 'SK':
             path = self.search('K')
